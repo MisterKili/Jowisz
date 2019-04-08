@@ -5,4 +5,70 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".RegisterActivity"/>
+    tools:context=".RegisterActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="Rejestracja"
+       android:textColor="@color/black"
+        android:textSize="34sp"
+        android:gravity="center"/>
+
+    <EditText
+        android:id="@+id/nameTextField"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:ems="10"
+        android:hint="Imię"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/surnameTextField"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:ems="10"
+        android:hint="Nazwisko"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/emailTextField"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:ems="10"
+        android:hint="E-mail"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/bornDateTextField"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:ems="10"
+        android:hint="Data urodzenia"
+        android:inputType="date" />
+
+    <EditText
+        android:id="@+id/passwordTextField"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:ems="10"
+        android:hint="Hasło"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/passwordTextFieldRepeat"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:ems="10"
+        android:hint="Powtórz hasło"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:text="Zarejestruj się"
+        android:onClick="register"/>
+
+</LinearLayout>
