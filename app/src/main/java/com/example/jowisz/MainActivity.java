@@ -11,11 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity implements ProductsFragment.OnFragmentInteractionListener,
-    ProfileFragment.OnFragmentInteractionListener {
+    ProfileFragment.OnFragmentInteractionListener, BasketFragment.OnFragmentInteractionListener {
 
     private Fragment currentFragment;
     private ProductsFragment productsFragment;
     private ProfileFragment profileFragment;
+    private BasketFragment basketFragment;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
@@ -54,7 +55,18 @@ public class MainActivity extends AppCompatActivity implements ProductsFragment.
                     fragmentTransaction.commit();
                     return true;
                 case R.id.navigation_basket:
-
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    if(basketFragment == null) {
+                        basketFragment = new BasketFragment();
+                        fragmentTransaction.add(R.id.container, basketFragment);
+//                        fragmentTransaction.commit();
+                    }
+                    if(currentFragment != null && currentFragment != basketFragment){
+                        fragmentTransaction.detach(currentFragment);
+                    }
+                    currentFragment = basketFragment;
+                    fragmentTransaction.attach(basketFragment);
+                    fragmentTransaction.commit();
                     return true;
             }
             return false;

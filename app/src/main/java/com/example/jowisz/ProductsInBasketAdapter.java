@@ -2,6 +2,7 @@ package com.example.jowisz;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,8 @@ import android.widget.TextView;
 import com.example.jowisz.Model.Basket;
 
 public class ProductsInBasketAdapter extends RecyclerView.Adapter<ProductsInBasketAdapter.ViewHolder> {
-    private Basket basket;
+
+    Basket basket;
     private LayoutInflater mInflater;
     private ProductsInBasketAdapter.ItemClickListener mClickListener;
 
@@ -24,7 +26,7 @@ public class ProductsInBasketAdapter extends RecyclerView.Adapter<ProductsInBask
     @Override
     public ProductsInBasketAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View view = mInflater.inflate(R.layout.product_row, parent, false);
+        View view = mInflater.inflate(R.layout.product_in_basket_row, parent, false);
 
         return new ProductsInBasketAdapter.ViewHolder(view);
     }
@@ -35,6 +37,8 @@ public class ProductsInBasketAdapter extends RecyclerView.Adapter<ProductsInBask
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.tvProdName.setText(basket.getProducts().get(position).getName());
+        holder.tvPriceXHowMany.setText(basket.getProducts().get(position).getPriceXHowMany());
+        holder.tvTotalPrice.setText(basket.getProducts().get(position).getTotalPrice());
     }
 
     public void setClickListener(ProductsInBasketAdapter.ItemClickListener itemClickListener){

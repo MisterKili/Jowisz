@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.jowisz.Model.Basket;
 
@@ -62,6 +63,7 @@ public class BasketFragment extends Fragment {
 
         basket = new Basket();
         basket.fillTestProducts();
+
         recyclerViewProducts = (RecyclerView) rootView.findViewById(R.id.rvProductsInBasket);
         recyclerViewProducts.setHasFixedSize(true);
 
@@ -72,7 +74,8 @@ public class BasketFragment extends Fragment {
         recyclerViewProducts.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerViewProducts.setAdapter(adapter);
 
-        return inflater.inflate(R.layout.fragment_basket, container, false);
+
+        return rootView;
     }
 
     public void onButtonPressed(Uri uri) {

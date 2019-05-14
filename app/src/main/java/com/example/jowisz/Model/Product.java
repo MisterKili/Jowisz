@@ -27,4 +27,8 @@ public class Product {
     public String getPriceXHowMany(){
         return Double.toString(priceUnit)+" x "+howMany;
     }
+
+    public String getTotalPrice(){
+        return String.valueOf(priceUnit*howMany);
+    }
 }
