@@ -62,7 +62,7 @@ public class BasketFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_basket, container, false);
 
         basket = new Basket();
-        basket.fillTestProducts();
+//        basket.fillTestProducts();
 
         recyclerViewProducts = (RecyclerView) rootView.findViewById(R.id.rvProductsInBasket);
         recyclerViewProducts.setHasFixedSize(true);

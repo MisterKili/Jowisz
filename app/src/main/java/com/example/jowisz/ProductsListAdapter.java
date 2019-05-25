@@ -7,15 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.jowisz.Model.Product;
+
+import java.util.List;
+
 public class ProductsListAdapter extends RecyclerView.Adapter<ProductsListAdapter.ViewHolder> {
 
-    private String[] mDataset;
+    private List<Product> mProducts;
+
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ProductsListAdapter(Context context, String[] myDataset) {
-        mDataset = myDataset;
+    public ProductsListAdapter(Context context, List<Product> products) {
+        mProducts = products;
         mInflater = LayoutInflater.from(context);
     }
 
@@ -33,11 +38,11 @@ public class ProductsListAdapter extends RecyclerView.Adapter<ProductsListAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.tvName.setText(mDataset[position]);
-        holder.tvProducer.setText("Producent");
-        holder.tvCategory.setText("Moze myszka");
-        holder.tvPrice.setText("50 zł");
-        holder.tvAvaibility.setText("27");
+        holder.tvName.setText(mProducts.get(position).getName());
+        holder.tvProducer.setText(mProducts.get(position).getProducer());
+        holder.tvCategory.setText(mProducts.get(position).getCategory());
+        holder.tvPrice.setText(String.valueOf(mProducts.get(position).getPriceUnit()));
+        holder.tvAvaibility.setText(String.valueOf(mProducts.get(position).getAvaibility()));
     }
 
     public void setClickListener(ProductsListAdapter.ItemClickListener itemClickListener){
@@ -47,7 +52,7 @@ public class ProductsListAdapter extends RecyclerView.Adapter<ProductsListAdapte
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mProducts.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
