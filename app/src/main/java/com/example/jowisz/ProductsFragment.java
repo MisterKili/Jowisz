@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +80,8 @@ public class ProductsFragment extends Fragment implements ProductsListAdapter.It
         adapter.setClickListener(this);
         recyclerViewProducts.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerViewProducts.setAdapter(adapter);
+
+
 
         return rootView;
     }
@@ -163,6 +164,7 @@ public class ProductsFragment extends Fragment implements ProductsListAdapter.It
                     //refreshing the product list after every operation
                     //so we get an updated list
                     refreshProductList(object.getJSONArray("sprzet"));
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -193,7 +195,7 @@ public class ProductsFragment extends Fragment implements ProductsListAdapter.It
     private void refreshProductList(JSONArray prod) throws JSONException {
         //clearing previous heroes
         mProducts.clear();
-
+        System.out.println(mProducts.toString());
         //traversing through all the items in the json array
         //the json we got from the response
         for (int i = 0; i < prod.length(); i++) {
@@ -212,10 +214,11 @@ public class ProductsFragment extends Fragment implements ProductsListAdapter.It
                     obj.getString("typ")
             ));
         }
-
+        System.out.println(mProducts.toString());
         //creating the adapter and setting it to the listview
         recyclerViewProducts.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new ProductsListAdapter(getContext(), mProducts);
         recyclerViewProducts.setAdapter(adapter);
+
     }
 }

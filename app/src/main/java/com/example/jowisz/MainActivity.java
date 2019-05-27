@@ -13,6 +13,7 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity implements ProductsFragment.OnFragmentInteractionListener,
     ProfileFragment.OnFragmentInteractionListener, BasketFragment.OnFragmentInteractionListener {
 
+
     private Fragment currentFragment;
     private ProductsFragment productsFragment;
     private ProfileFragment profileFragment;

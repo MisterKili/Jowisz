@@ -19,4 +19,25 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation" />
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="351dp"
+        android:layout_height="68dp"
+        android:alpha="0.7"
+        android:gravity="center"
+        android:text="Witamy w Jowisz"
+        android:textColor="@color/black"
+        android:textSize="34dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="45dp" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="372dp"
+        android:layout_height="611dp"
+        app:srcCompat="@drawable/jupiter"
+        tools:layout_editor_absoluteX="21dp"
+        tools:layout_editor_absoluteY="2dp" />
+
 </android.support.constraint.ConstraintLayout>

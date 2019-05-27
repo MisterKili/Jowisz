@@ -4,10 +4,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+
+import java.util.regex.Pattern;
 
 
 /**
@@ -18,6 +22,7 @@ import android.widget.EditText;
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class ProfileFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +39,7 @@ public class ProfileFragment extends Fragment {
     private EditText surname;
     private EditText oldPassword;
     private EditText newPassword;
-
+    private Button saveButton;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -72,12 +77,18 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        name = getActivity().findViewById(R.id.profileNameTextField);
-        surname = getActivity().findViewById(R.id.profileSurnameTextField);
-        oldPassword = getActivity().findViewById(R.id.profileOldPasswordTextField);
-        newPassword = getActivity().findViewById(R.id.profileNewPasswordTextField);
+        name = v.findViewById(R.id.profileNameTextField);
+        surname = v.findViewById(R.id.profileSurnameTextField);
+        oldPassword = v.findViewById(R.id.profileOldPasswordTextField);
+        newPassword = v.findViewById(R.id.profileNewPasswordTextField);
+        saveButton = v.findViewById(R.id.saveChangesButton);
 
-
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveChanges();
+            }
+        });
         return v;
     }
 
@@ -105,27 +116,60 @@ public class ProfileFragment extends Fragment {
         mListener = null;
     }
 
-    public void saveChanges(View v){
-        StringBuilder errors = new StringBuilder();
-        String password = this.oldPassword.getText().toString();
-        String repeatedPassword = this.newPassword.getText().toString();
-        String name = this.name.getText().toString();
-        String surname = this.surname.getText().toString();
+    public void saveChanges(){
+        int errors = 0;
+        String passwordText = this.oldPassword.getText().toString().trim();
+        String newPasswordText = this.newPassword.getText().toString().trim();
+        String nameText = this.name.getText().toString().trim();
+        String surnameText = this.surname.getText().toString().trim();
 
-        if (!password.equals(repeatedPassword)) {
-            errors.append("Hasłą się nie zgadzają");
-            this.oldPassword.setBackgroundColor(getResources().getColor(R.color.errorLight));
-            this.newPassword.setBackgroundColor(getResources().getColor(R.color.errorLight));
+        if (TextUtils.isEmpty(passwordText)) {
+            oldPassword.setError("Proszę wprowadzić dotychczasowe hasło");
+            oldPassword.requestFocus();
+            errors += 1;
         }
-        if (name.matches(".*\\d.*")){
-            errors.append("Imię musi zawierać tylko litery");
-            this.name.setBackgroundColor(getResources().getColor(R.color.errorLight));
+
+        if (TextUtils.isEmpty(newPasswordText)) {
+            newPassword.setError("Proszę wprowadzić nowe hasło");
+            newPassword.requestFocus();
+            errors += 1;
         }
-        if (surname.matches(".*\\d.*")){
-            errors.append("Nazwisko musi zawierać tylko litery");
-            this.surname.setBackgroundColor(getResources().getColor(R.color.errorLight));
+
+        if (!passwordText.equals(newPasswordText)) {
+            newPassword.setError("Hasła się nie powtarzają");
+            newPassword.setText("");
+            errors+=1;
+        }
+
+        if (TextUtils.isEmpty(nameText)) {
+            name.setError("Proszę wprowadzić imię");
+            name.requestFocus();
+            errors += 1;
+
+        } else if (!Pattern.matches("[a-zA-Z]+", nameText)) {
+            name.setError("Imię musi zawierać tylko litery");
+            name.requestFocus();
+            errors += 1;
+        }
+
+        if (TextUtils.isEmpty(surnameText)) {
+            surname.setError("Proszę wprowadzić nazwisko");
+            surname.requestFocus();
+            errors += 1;
+        } else if (!Pattern.matches("[a-zA-Z]+", surnameText)) {
+            surname.setError("Nazwisko musi zawierać tylko litery");
+            surname.requestFocus();
+            errors += 1;
+        }
+
+        if (errors ==0) {
+            // UPDATE DATABASE
+
+            System.out.println("OK");
         }
     }
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -136,6 +180,7 @@ public class ProfileFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
