@@ -9,12 +9,13 @@ import android.widget.TextView;
 
 import com.example.jowisz.Model.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductsListAdapter extends RecyclerView.Adapter<ProductsListAdapter.ViewHolder> {
 
     private List<Product> mProducts;
-
+    private List<Product> mProductsCopy = new ArrayList<>();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
@@ -22,6 +23,9 @@ public class ProductsListAdapter extends RecyclerView.Adapter<ProductsListAdapte
     public ProductsListAdapter(Context context, List<Product> products) {
         mProducts = products;
         mInflater = LayoutInflater.from(context);
+        mProducts = new ArrayList<>();
+        mProductsCopy.addAll(products);
+        System.out.println(mProductsCopy.toString());
     }
 
     // Create new views (invoked by the layout manager)
@@ -80,6 +84,21 @@ public class ProductsListAdapter extends RecyclerView.Adapter<ProductsListAdapte
 
     public interface ItemClickListener {
         void onItemClick(View view, int position);
+    }
+
+    public void filter(String text) {
+        mProducts.clear();
+        if(text.isEmpty()){
+            mProducts.addAll(mProductsCopy);
+        } else{
+            text = text.toLowerCase();
+            for(Product item: mProductsCopy){
+                if(item.name.toLowerCase().contains(text)) {
+                    mProducts.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
 }

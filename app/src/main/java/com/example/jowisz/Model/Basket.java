@@ -23,4 +23,8 @@ public class Basket {
     public ArrayList<Product> getProducts(){
         return products;
     }
+
+    public double getSumTotal() {
+        return sumTotal;
+    }
 }

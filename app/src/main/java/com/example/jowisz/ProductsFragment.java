@@ -1,6 +1,7 @@
 package com.example.jowisz;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,10 +9,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.jowisz.Data.Api;
 import com.example.jowisz.Data.RequestHandler;
@@ -69,6 +70,7 @@ public class ProductsFragment extends Fragment implements ProductsListAdapter.It
 
         mProducts = new ArrayList<>();
 
+
         recyclerViewProducts = (RecyclerView) rootView.findViewById(R.id.rvProducts);
         recyclerViewProducts.setHasFixedSize(true);
 
@@ -77,17 +79,36 @@ public class ProductsFragment extends Fragment implements ProductsListAdapter.It
         readProducts();
 
         adapter = new ProductsListAdapter(getContext(), mProducts);
+
         adapter.setClickListener(this);
         recyclerViewProducts.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerViewProducts.setAdapter(adapter);
 
+        SearchView searchView = rootView.findViewById(R.id.search);
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.filter(query);
+                return true;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.filter(newText);
+                return true;
+            }
+        });
+        recyclerViewProducts.invalidate();
         return rootView;
     }
 
     public void onItemClick(View view, int position){
-        Toast.makeText(getContext(), "Kliknieto"+position, Toast.LENGTH_SHORT).show();
+        Intent intent= new Intent(getContext(),ProductActivity.class);
+        Product product =  mProducts.get(position);
+
+        intent.putExtra("product", product);
+        startActivity(intent);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

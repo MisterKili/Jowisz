@@ -1,9 +1,11 @@
 package com.example.jowisz.Model;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
 
     private int id;
-    private String name;
+    public String name;
     private String description;
     private double priceUnit;
     private int availability;

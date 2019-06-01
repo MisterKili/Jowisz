@@ -1,6 +1,7 @@
 package com.example.jowisz;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.jowisz.Model.Basket;
 
@@ -30,7 +32,8 @@ public class BasketFragment extends Fragment {
     RecyclerView recyclerViewProducts;
     private ProductsInBasketAdapter adapter;
     Basket basket;
-
+    Button orderButton;
+    private TextView sum;
     public BasketFragment() {
         // Required empty public constructor
     }
@@ -63,6 +66,10 @@ public class BasketFragment extends Fragment {
 
         basket = new Basket();
 //        basket.fillTestProducts();
+        orderButton = rootView.findViewById(R.id.setOrder);
+
+        sum = rootView.findViewById(R.id.sumBasket);
+        sum.setText("Suma: " + basket.getSumTotal());
 
         recyclerViewProducts = (RecyclerView) rootView.findViewById(R.id.rvProductsInBasket);
         recyclerViewProducts.setHasFixedSize(true);
@@ -73,6 +80,15 @@ public class BasketFragment extends Fragment {
 //        adapter.setClickListener(this);
         recyclerViewProducts.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerViewProducts.setAdapter(adapter);
+
+        orderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), OrderForm.class);
+                startActivity(intent);
+            }
+        });
+
 
 
         return rootView;
