@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -137,6 +138,7 @@ public class RegisterActivity extends AppCompatActivity {
             params.put("imie", nameText);
             params.put("dataUr", bornDayText);
             System.out.println("ok");
+            Log.d("aaa", "register");
             PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_CREATE_KLIENT, params, CODE_POST_REQUEST);
             request.execute();
         } else {

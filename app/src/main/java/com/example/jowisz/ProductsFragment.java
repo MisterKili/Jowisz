@@ -9,10 +9,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.support.v7.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.jowisz.Data.Api;
 import com.example.jowisz.Data.RequestHandler;
@@ -33,6 +35,8 @@ public class ProductsFragment extends Fragment implements ProductsListAdapter.It
     private static final int CODE_POST_REQUEST = 1025;
 
     private List<Product> mProducts;
+
+    private String categoryName;
 
     private OnFragmentInteractionListener mListener;
 
@@ -66,20 +70,43 @@ public class ProductsFragment extends Fragment implements ProductsListAdapter.It
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+//        int categoryID = getArguments().getInt("categoryID");
+//        categoryName = getArguments().getString("categoryName");
+
         View rootView = inflater.inflate(R.layout.fragment_products, container, false);
 
         mProducts = new ArrayList<>();
-
 
         recyclerViewProducts = (RecyclerView) rootView.findViewById(R.id.rvProducts);
         recyclerViewProducts.setHasFixedSize(true);
 
         recyclerViewProducts.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        readProducts();
+        mProducts.add(new Product(1, "Mysz Tracer", "swietna myszka, polecam",
+                25.0, "", 20, "Tracer", "Myszki"));
+        mProducts.add(new Product(1, "Klawiatura Tracer", "swietna myszka, polecam",
+                25.0, "", 20, "Tracer", "Myszki"));
+        mProducts.add(new Product(1, "jbasdhs Tracer", "swietna myszka, polecam",
+                25.0, "", 20, "Tracer", "Myszki"));
+        mProducts.add(new Product(1, "fsdfds Tracer", "swietna myszka, polecam",
+                25.0, "", 20, "Tracer", "Myszki"));
+        mProducts.add(new Product(1, "Mysfdsfadz Tracer", "swietna myszka, polecam",
+                25.0, "", 20, "Tracer", "Myszki"));
+        mProducts.add(new Product(1, "Klawiatura Tracer", "swietna myszka, polecam",
+                25.0, "", 20, "Tracer", "Myszki"));
+
+
+//        readProducts();
+
+//        Product temp;
+//        for(int i = 0; i<mProducts.size(); i++){
+//            temp = mProducts.get(i);
+//            if(!temp.getCategory().equals(categoryName)){
+//                mProducts.remove(i);
+//            }
+//        }
 
         adapter = new ProductsListAdapter(getContext(), mProducts);
-
         adapter.setClickListener(this);
         recyclerViewProducts.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerViewProducts.setAdapter(adapter);
@@ -100,10 +127,13 @@ public class ProductsFragment extends Fragment implements ProductsListAdapter.It
             }
         });
         recyclerViewProducts.invalidate();
+
         return rootView;
     }
 
     public void onItemClick(View view, int position){
+//        Toast.makeText(getContext(), "Kliknieto"+position, Toast.LENGTH_SHORT).show();
+
         Intent intent= new Intent(getContext(),ProductActivity.class);
         Product product =  mProducts.get(position);
 
@@ -179,13 +209,16 @@ public class ProductsFragment extends Fragment implements ProductsListAdapter.It
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            Log.d("aaa","W onPostExecute, s= "+s);
             try {
                 JSONObject object = new JSONObject(s);
                 if (!object.getBoolean("error")) {
+                    Log.d("aaa", "objectJSON jest nie jest errorem");
                     //refreshing the product list after every operation
                     //so we get an updated list
+                    JSONArray jarray = object.getJSONArray("sprzet");
+                    Log.d("aaa", "arr0: "+jarray.get(0).toString());
                     refreshProductList(object.getJSONArray("sprzet"));
-
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -211,9 +244,11 @@ public class ProductsFragment extends Fragment implements ProductsListAdapter.It
     private void readProducts() {
         PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_READ_SPRZET, null, CODE_GET_REQUEST);
         request.execute();
+        Log.d("aaa", "W read, size: "+mProducts.size());
     }
 
     private void refreshProductList(JSONArray prod) throws JSONException {
+        Log.d("aaa", "Poczatek refresh, size: "+mProducts.size());
         //clearing previous heroes
         mProducts.clear();
         System.out.println(mProducts.toString());
@@ -240,6 +275,6 @@ public class ProductsFragment extends Fragment implements ProductsListAdapter.It
         recyclerViewProducts.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new ProductsListAdapter(getContext(), mProducts);
         recyclerViewProducts.setAdapter(adapter);
-
+        Log.d("aaa", "koniec refresh, size: "+mProducts.size());
     }
 }

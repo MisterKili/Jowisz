@@ -10,16 +10,22 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.example.jowisz.Model.Basket;
+
 public class MainActivity extends AppCompatActivity implements ProductsFragment.OnFragmentInteractionListener,
-    ProfileFragment.OnFragmentInteractionListener, BasketFragment.OnFragmentInteractionListener {
+    ProfileFragment.OnFragmentInteractionListener, BasketFragment.OnFragmentInteractionListener,
+        ChooseCategoryFragment.OnFragmentInteractionListener {
 
 
-    private Fragment currentFragment;
+    Fragment currentFragment;
     private ProductsFragment productsFragment;
     private ProfileFragment profileFragment;
     private BasketFragment basketFragment;
+    private ChooseCategoryFragment chooseCategoryFragment;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+
+    Basket basket;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -54,7 +60,21 @@ public class MainActivity extends AppCompatActivity implements ProductsFragment.
                     currentFragment = productsFragment;
                     fragmentTransaction.attach(productsFragment);
                     fragmentTransaction.commit();
+
+//                    fragmentTransaction = fragmentManager.beginTransaction();
+//                    if(chooseCategoryFragment == null) {
+//                        chooseCategoryFragment = new ChooseCategoryFragment();
+//                        fragmentTransaction.add(R.id.container, chooseCategoryFragment);
+////                        fragmentTransaction.commit();
+//                    }
+//                    if(currentFragment != null && currentFragment != chooseCategoryFragment){
+//                        fragmentTransaction.detach(currentFragment);
+//                    }
+//                    currentFragment = chooseCategoryFragment;
+//                    fragmentTransaction.attach(chooseCategoryFragment);
+//                    fragmentTransaction.commit();
                     return true;
+
                 case R.id.navigation_basket:
                     fragmentTransaction = fragmentManager.beginTransaction();
                     if(basketFragment == null) {
@@ -85,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements ProductsFragment.
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
 
+        basket = new Basket();
     }
 
     @Override

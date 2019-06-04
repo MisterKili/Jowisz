@@ -27,4 +27,8 @@ public class Basket {
     public double getSumTotal() {
         return sumTotal;
     }
+
+    public void putProduct(Product product){
+        products.add(product);
+    }
 }

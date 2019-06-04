@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jowisz.Model.Product;
@@ -47,6 +48,7 @@ public class ProductsListAdapter extends RecyclerView.Adapter<ProductsListAdapte
         holder.tvCategory.setText(mProducts.get(position).getCategory());
         holder.tvPrice.setText(String.valueOf(mProducts.get(position).getPriceUnit()));
         holder.tvAvaibility.setText(String.valueOf(mProducts.get(position).getAvaibility()));
+        holder.imageView.setImageResource(R.drawable.jupiter);
     }
 
     public void setClickListener(ProductsListAdapter.ItemClickListener itemClickListener){
@@ -62,6 +64,7 @@ public class ProductsListAdapter extends RecyclerView.Adapter<ProductsListAdapte
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView tvName, tvCategory, tvPrice, tvAvaibility, tvProducer;
+        ImageView imageView;
 
         ViewHolder(View itemView){
             super(itemView);
@@ -71,7 +74,7 @@ public class ProductsListAdapter extends RecyclerView.Adapter<ProductsListAdapte
             tvCategory = itemView.findViewById(R.id.tvProductCategory);
             tvAvaibility = itemView.findViewById(R.id.tvAvaibility);
             tvProducer = itemView.findViewById(R.id.tvProducer);
-
+            imageView = itemView.findViewById(R.id.imageView);
             itemView.setOnClickListener(this);
         }
 
