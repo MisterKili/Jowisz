@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.SearchView;
-import android.widget.Toast;
 
 import com.example.jowisz.Data.Api;
 import com.example.jowisz.Data.RequestHandler;
@@ -69,47 +68,38 @@ public class ProductsFragment extends Fragment implements ProductsListAdapter.It
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-//        int categoryID = getArguments().getInt("categoryID");
-//        categoryName = getArguments().getString("categoryName");
-
+                             Bundle savedInstanceState) {;
         View rootView = inflater.inflate(R.layout.fragment_products, container, false);
 
         mProducts = new ArrayList<>();
 
         recyclerViewProducts = (RecyclerView) rootView.findViewById(R.id.rvProducts);
-        recyclerViewProducts.setHasFixedSize(true);
+//        recyclerViewProducts.setHasFixedSize(true);
+//        recyclerViewProducts.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        recyclerViewProducts.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        mProducts.add(new Product(1, "Mysz Tracer", "swietna myszka, polecam",
-                25.0, "", 20, "Tracer", "Myszki"));
-        mProducts.add(new Product(1, "Klawiatura Tracer", "swietna myszka, polecam",
-                25.0, "", 20, "Tracer", "Myszki"));
-        mProducts.add(new Product(1, "jbasdhs Tracer", "swietna myszka, polecam",
-                25.0, "", 20, "Tracer", "Myszki"));
-        mProducts.add(new Product(1, "fsdfds Tracer", "swietna myszka, polecam",
-                25.0, "", 20, "Tracer", "Myszki"));
-        mProducts.add(new Product(1, "Mysfdsfadz Tracer", "swietna myszka, polecam",
-                25.0, "", 20, "Tracer", "Myszki"));
-        mProducts.add(new Product(1, "Klawiatura Tracer", "swietna myszka, polecam",
-                25.0, "", 20, "Tracer", "Myszki"));
+//        mProducts.add(new Product(1, "Mysz Tracer", "swietna myszka, polecam",
+//                25.0, "", 20, "Tracer", "Myszki"));
+//        mProducts.add(new Product(1, "Klawiatura Tracer", "swietna myszka, polecam",
+//                25.0, "", 20, "Tracer", "Myszki"));
+//        mProducts.add(new Product(1, "jbasdhs Tracer", "swietna myszka, polecam",
+//                25.0, "", 20, "Tracer", "Myszki"));
+//        mProducts.add(new Product(1, "fsdfds Tracer", "swietna myszka, polecam",
+//                25.0, "", 20, "Tracer", "Myszki"));
+//        mProducts.add(new Product(1, "Mysfdsfadz Tracer", "swietna myszka, polecam",
+//                25.0, "", 20, "Tracer", "Myszki"));
+//        mProducts.add(new Product(1, "Klawiatura Tracer", "swietna myszka, polecam",
+//                25.0, "", 20, "Tracer", "Myszki"));
 
 
 //        readProducts();
 
-//        Product temp;
-//        for(int i = 0; i<mProducts.size(); i++){
-//            temp = mProducts.get(i);
-//            if(!temp.getCategory().equals(categoryName)){
-//                mProducts.remove(i);
-//            }
-//        }
+        if(getArguments() != null) {
+            int categoryID = getArguments().getInt("categoryID");
+            readProductsFromCategory(categoryID);
+        }else{
+            readProducts();
+        }
 
-        adapter = new ProductsListAdapter(getContext(), mProducts);
-        adapter.setClickListener(this);
-        recyclerViewProducts.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        recyclerViewProducts.setAdapter(adapter);
 
         SearchView searchView = rootView.findViewById(R.id.search);
 
@@ -242,7 +232,14 @@ public class ProductsFragment extends Fragment implements ProductsListAdapter.It
     }
 
     private void readProducts() {
-        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_READ_SPRZET, null, CODE_GET_REQUEST);
+        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_READ_SPRZET, null,
+                CODE_GET_REQUEST);
+        request.execute();
+        Log.d("aaa", "W read, size: "+mProducts.size());
+    }
+
+    private void readProductsFromCategory(int catID) {
+        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_READ_SPRZET_Z_KATEGORII + catID, null, CODE_GET_REQUEST);
         request.execute();
         Log.d("aaa", "W read, size: "+mProducts.size());
     }
@@ -272,9 +269,13 @@ public class ProductsFragment extends Fragment implements ProductsListAdapter.It
         }
         System.out.println(mProducts.toString());
         //creating the adapter and setting it to the listview
+        recyclerViewProducts.setHasFixedSize(true);
         recyclerViewProducts.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewProducts.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         adapter = new ProductsListAdapter(getContext(), mProducts);
+        adapter.setClickListener(this);
         recyclerViewProducts.setAdapter(adapter);
+        recyclerViewProducts.invalidate();
         Log.d("aaa", "koniec refresh, size: "+mProducts.size());
     }
 }

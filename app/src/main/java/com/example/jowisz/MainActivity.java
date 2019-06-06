@@ -3,12 +3,15 @@ package com.example.jowisz;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.example.jowisz.Model.Basket;
 
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements ProductsFragment.
     private ProfileFragment profileFragment;
     private BasketFragment basketFragment;
     private ChooseCategoryFragment chooseCategoryFragment;
+    boolean categoryChosen = false;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
@@ -48,31 +52,31 @@ public class MainActivity extends AppCompatActivity implements ProductsFragment.
                     fragmentTransaction.commit();
                     return true;
                 case R.id.navigation_goods:
-                    fragmentTransaction = fragmentManager.beginTransaction();
-                    if(productsFragment == null) {
-                        productsFragment = new ProductsFragment();
-                        fragmentTransaction.add(R.id.container, productsFragment);
-//                        fragmentTransaction.commit();
+                    if(categoryChosen) {
+                        fragmentTransaction = fragmentManager.beginTransaction();
+                        if (productsFragment == null) {
+                            productsFragment = new ProductsFragment();
+                            fragmentTransaction.add(R.id.container, productsFragment);
+                        }
+                        if (currentFragment != null && currentFragment != productsFragment) {
+                            fragmentTransaction.detach(currentFragment);
+                        }
+                        currentFragment = productsFragment;
+                        fragmentTransaction.attach(productsFragment);
+                        fragmentTransaction.commit();
+                    }else {
+                        fragmentTransaction = fragmentManager.beginTransaction();
+                        if (chooseCategoryFragment == null) {
+                            chooseCategoryFragment = new ChooseCategoryFragment();
+                            fragmentTransaction.add(R.id.container, chooseCategoryFragment);
+                        }
+                        if (currentFragment != null && currentFragment != chooseCategoryFragment) {
+                            fragmentTransaction.detach(currentFragment);
+                        }
+                        currentFragment = chooseCategoryFragment;
+                        fragmentTransaction.attach(chooseCategoryFragment);
+                        fragmentTransaction.commit();
                     }
-                    if(currentFragment != null && currentFragment != productsFragment){
-                        fragmentTransaction.detach(currentFragment);
-                    }
-                    currentFragment = productsFragment;
-                    fragmentTransaction.attach(productsFragment);
-                    fragmentTransaction.commit();
-
-//                    fragmentTransaction = fragmentManager.beginTransaction();
-//                    if(chooseCategoryFragment == null) {
-//                        chooseCategoryFragment = new ChooseCategoryFragment();
-//                        fragmentTransaction.add(R.id.container, chooseCategoryFragment);
-////                        fragmentTransaction.commit();
-//                    }
-//                    if(currentFragment != null && currentFragment != chooseCategoryFragment){
-//                        fragmentTransaction.detach(currentFragment);
-//                    }
-//                    currentFragment = chooseCategoryFragment;
-//                    fragmentTransaction.attach(chooseCategoryFragment);
-//                    fragmentTransaction.commit();
                     return true;
 
                 case R.id.navigation_basket:

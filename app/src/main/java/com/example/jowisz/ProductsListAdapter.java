@@ -24,7 +24,7 @@ public class ProductsListAdapter extends RecyclerView.Adapter<ProductsListAdapte
     public ProductsListAdapter(Context context, List<Product> products) {
         mProducts = products;
         mInflater = LayoutInflater.from(context);
-        mProducts = new ArrayList<>();
+//        mProducts = new ArrayList<>();
         mProductsCopy.addAll(products);
         System.out.println(mProductsCopy.toString());
     }
