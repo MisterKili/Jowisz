@@ -141,6 +141,8 @@ public class RegisterActivity extends AppCompatActivity {
             Log.d("aaa", "register");
             PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_CREATE_KLIENT, params, CODE_POST_REQUEST);
             request.execute();
+            Toast.makeText(this, "Konto zostało stworzone", Toast.LENGTH_SHORT).show();
+
         } else {
             return;
         }
