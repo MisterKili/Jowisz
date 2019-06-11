@@ -83,6 +83,107 @@
 			break; 
 			*/
 			
+			case 'createklient':
+				//first check the parameters required for this request are available or not 
+				isTheseParametersAvailable(array('email', 'haslo', 'nazw', 'imie', 'dataUr'));
+				
+				//creating a new dboperation object
+				$db = new DbOperation();
+				
+				//creating a new record in the database
+				$result = $db->createKlient(
+					$_POST['email'],
+					$_POST['haslo'],
+					$_POST['nazw'],
+					$_POST['imie'],
+					$_POST['dataUr']
+				);
+				
+ 
+				//if the record is created adding success to response
+				if($result){
+					//record is created means there is no error
+					$response['error'] = false; 
+ 
+					//in message we have a success message
+					$response['message'] = 'Klient addd successfully';
+				}else{
+ 
+					//if record is not added that means there is an error 
+					$response['error'] = true; 
+ 
+					//and we have the error message
+					$response['message'] = 'Some error occurred please try again';
+				}
+				
+			break; 
+			
+			case 'createzamowienie':
+				//first check the parameters required for this request are available or not 
+				isTheseParametersAvailable(array('Nazw', 'Imie', 'Adres', 'Tel', 'DataZam', 'CzyOplacono', 'IdPlat'));
+				
+				//creating a new dboperation object
+				$db = new DbOperation();
+				
+				//creating a new record in the database
+				$result = $db->createZamowienie(
+					$_POST['Nazw'],
+					$_POST['Imie'],
+					$_POST['Adres'],
+					$_POST['Tel'],
+					$_POST['DataZam'],
+					$_POST['CzyOplacono'],
+					//$_POST['IdK'],
+					$_POST['IdPlat']
+				);
+				
+ 
+				//if the record is created adding success to response
+				if($result){
+					//record is created means there is no error
+					$response['error'] = false; 
+					//in message we have a success message
+					$response['message'] = 'Zamowienie addd successfully';
+				}else{
+					//if record is not added that means there is an error 
+					$response['error'] = true; 
+					//and we have the error message
+					$response['message'] = 'Some error occurred please try again';
+				}
+				
+			break; 
+			
+			case 'createzamowieniesprzetu':
+				//first check the parameters required for this request are available or not 
+				isTheseParametersAvailable(array('IdZam', 'IdSpr', 'Liczba', 'Cena'));
+				
+				//creating a new dboperation object
+				$db = new DbOperation();
+				
+				//creating a new record in the database
+				$result = $db->createZamowienieSprzetu(
+					$_POST['IdZam'],
+					$_POST['IdSpr'],
+					$_POST['Liczba'],
+					$_POST['Cena']
+				);
+				
+ 
+				//if the record is created adding success to response
+				if($result){
+					//record is created means there is no error
+					$response['error'] = false; 
+					//in message we have a success message
+					$response['message'] = 'Zamowienie sprzetu addd successfully';
+				}else{
+					//if record is not added that means there is an error 
+					$response['error'] = true; 
+					//and we have the error message
+					$response['message'] = 'Some error occurred please try again';
+				}
+				
+			break; 
+			
 			//the READ operation
 			//if the call is getheroes
 			case 'getsprzet':
@@ -91,6 +192,28 @@
 				$response['message'] = 'Request successfully completed';
 				$response['sprzet'] = $db->getSprzet();
 			break; 
+			
+			case 'getsprzetzkategorii':
+				if(isset($_GET['IdTyp'])){
+					$db = new DbOperation();
+					$response['error'] = false; 
+					$response['message'] = 'Request successfully completed';
+					$response['sprzet'] = $db->getSprzetZKategorii($_GET['IdTyp']);
+				}
+			break; 
+			
+			case 'getkategorie':
+				$db = new DbOperation();
+				$response['error'] = false; 
+				$response['message'] = 'Request successfully completed';
+				$response['kategorie'] = $db->getKategorie();
+			break; 
+			
+			case 'getLastIDFromZamowienie':
+				$db = new DbOperation();
+				$response['error'] = false; 
+				$response['message'] = 'Request successfully completed';
+				$response['lastID'] = $db->getLastIDFromZamowienie();
 			
 			/*
 			//the UPDATE operation
