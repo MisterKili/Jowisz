@@ -23,15 +23,14 @@ class DbOperation
 	* The create operation
 	* When this method is called a new record is created in the database
 	*/
-	/*
 	function createKlient($email, $haslo, $nazw, $imie, $dataUr){
 		$stmt = $this->con->prepare("INSERT INTO klient (email, haslo, nazw, imie, dataUr) VALUES (?, ?, ?, ?, ?)");
-		$stmt->bind_param("ssis", $email, $haslo, $nazw, $imie, $dataUr);
+		$stmt->bind_param("sssss", $email, $haslo, $nazw, $imie, $dataUr);
 		if($stmt->execute())
 			return true; 
 		return false; 
 	}
-	*/
+	
  
 	/*
 	* The read operation
@@ -62,6 +61,86 @@ class DbOperation
 		
 		return $sprzety; 
 	}
+	
+	function getLastIDFromZamowienie(){
+		$stmt = $this->con->prepare("SELECT MAX(IdZam) FROM zamowienie");
+		$stmt->execute();
+		$stmt->bind_result($result);
+		
+		$stmt->fetch();
+		$lastID = $result;
+		return $lastID;
+	}
+	
+	function createZamowienie($nazw, $imie, $adres, $tel, $dataZam, $czyOplacono, $IdPlat){
+		$IdPlatInt = (int) $IdPlat;
+		$stmt = $this->con->prepare("INSERT INTO zamowienie (Nazw, Imie, Adres, Tel, DataZam, CzyOplacono, IdPlat) VALUES (?, ?, ?, ?, ?, ?, ?)");
+		$stmt->bind_param("ssssssi", $nazw, $imie, $adres, $tel, $dataZam, $czyOplacono, $IdPlatInt);
+		if($stmt->execute())
+			return true; 
+		return false; 
+	}
+	
+	function createZamowienieSprzetu($IdZam, $IdSpr, $Liczba, $Cena){
+		$IdZamI = (int) $IdZam;
+		$IdSprI = (int) $IdSpr;
+		$LiczbaI = (int) $Liczba;
+		$CenaD = (double) $Cena;
+		$stmt = $this->con->prepare("INSERT INTO zamowienie_sprzetu (IdZam, IdSpr, Liczba, Cena) VALUES (?, ?, ?, ?);");
+		$stmt->bind_param("iiid", $IdZamI, $IdSprI, $LiczbaI, $CenaD);
+		if($stmt->execute())
+			return true; 
+		return false; 
+	}
+	
+	function getSprzetZKategorii($idTyp){
+		$stmt = $this->con->prepare("SELECT idSpr, nazwa, opis, cena, zdjecie, liczbaSzt, nazwaProd, nazwaTyp 
+										FROM sprzet S JOIN producent P ON S.IdProd = P.IdProd
+										JOIN typsprzetu T ON S.IdTyp = T.IdTyp
+										WHERE T.IdTyp = ? ");
+		$stmt->bind_param("i", $idTyp);
+		$stmt->execute();
+		$stmt->bind_result($idSpr, $nazwa, $opis, $cena, $zdjecie, $liczbaSztuk, $producent, $typ);
+		
+		$sprzety = array(); 
+		
+		while($stmt->fetch()){
+			$sprzet  = array();
+			$sprzet['idSpr'] = $idSpr; 
+			$sprzet['nazwa'] = $nazwa; 
+			$sprzet['opis'] = $opis; 
+			$sprzet['cena'] = $cena; 
+			$sprzet['zdjecie'] = $zdjecie; 
+			$sprzet['liczbaSztuk'] = $liczbaSztuk; 
+			$sprzet['producent'] = $producent; 
+			$sprzet['typ'] = $typ; 
+			
+			array_push($sprzety, $sprzet); 
+		}
+		
+		return $sprzety; 
+	}
+	
+	function getKategorie(){
+		$stmt = $this->con->prepare("SELECT * 
+										FROM typsprzetu
+										ORDER BY 2;");
+		$stmt->execute();
+		$stmt->bind_result($idTypu, $nazwa);
+		
+		$kategorie = array(); 
+		
+		while($stmt->fetch()){
+			$typ  = array();
+			$typ['IdTyp'] = $idTypu; 
+			$typ['NazwaTyp'] = $nazwa; 
+			
+			array_push($kategorie, $typ); 
+		}
+		
+		return $kategorie; 
+	}
+	
 	
 	/*
 	* The update operation
