@@ -1,8 +1,9 @@
 package com.example.jowisz.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Basket {
+public class Basket implements Serializable {
     private ArrayList<Product> products;
     private double sumTotal = 0;
 
@@ -30,5 +31,6 @@ public class Basket {
 
     public void putProduct(Product product){
         products.add(product);
+        sumTotal += product.getTotalPriceDouble();
     }
 }

@@ -64,9 +64,11 @@ public class BasketFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_basket, container, false);
 
-        basket = new Basket();
-//        basket.fillTestProducts();
+        MainActivity mainActivity = (MainActivity) getActivity();
+        basket = mainActivity.basket;
         orderButton = rootView.findViewById(R.id.setOrder);
+
+        System.out.println("Basket w BasketFragment.size() = "+basket.size());
 
         sum = rootView.findViewById(R.id.sumBasket);
         sum.setText("Suma: " + basket.getSumTotal());
@@ -85,6 +87,7 @@ public class BasketFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), OrderForm.class);
+                intent.putExtra("basket", basket);
                 startActivity(intent);
             }
         });

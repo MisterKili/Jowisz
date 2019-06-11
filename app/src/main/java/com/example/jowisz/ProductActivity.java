@@ -31,7 +31,7 @@ public class ProductActivity extends AppCompatActivity {
         description = findViewById(R.id.descriptionProduct);
         price = findViewById(R.id.priceProduct);
         amount = findViewById(R.id.amountProduct);
-        avaliability = findViewById(R.id.avaliabilityProduct);
+//        avaliability = findViewById(R.id.avaliabilityProduct);
         addToBusket = findViewById(R.id.addProduct);
 
         name.setText(product.getName());
@@ -59,7 +59,7 @@ public class ProductActivity extends AppCompatActivity {
                     //ODEJMOWANIE ILOSCI
 
                 } else {
-                    Toast.makeText(getApplicationContext(), "Towaru nie ma na magazynie", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Towaru nie ma w magazynie", Toast.LENGTH_LONG).show();
                     avaliability.setText("Niedostępny");
                     avaliability.setTextColor(getResources().getColor(R.color.red));
                 }

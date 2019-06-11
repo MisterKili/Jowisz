@@ -89,22 +89,12 @@ public class ChooseCategoryFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_choose_category, container, false);
 
         mCategories = new ArrayList<>();
-//        mCategories.add(new Category(2, "Klawiatury"));
-//        mCategories.add(new Category(1, "Laptopy"));
-//        mCategories.add(new Category(3, "Myszy"));
 
         listView = rootView.findViewById(R.id.lvCategoryList);
 
         readCategories();
 
         adapter = new CategoryArrayAdapter(getContext(), mCategories);
-//        ArrayList<String> valuesArray = new ArrayList<>();
-//        valuesArray.add("Klawiatury");
-//        valuesArray.add("Laptopy");
-//        valuesArray.add("Myszy");
-
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-//                android.R.layout.simple_list_item_1, android.R.id.text1, valuesArray);\
 
         listView.setAdapter(adapter);
 
@@ -130,7 +120,6 @@ public class ChooseCategoryFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
-        // Inflate the layout for this fragment
         return rootView;
     }
 

@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -124,11 +125,21 @@ public class ProductsFragment extends Fragment implements ProductsListAdapter.It
     public void onItemClick(View view, int position){
 //        Toast.makeText(getContext(), "Kliknieto"+position, Toast.LENGTH_SHORT).show();
 
-        Intent intent= new Intent(getContext(),ProductActivity.class);
+//        Intent intent= new Intent(getContext(),ProductActivity.class);
         Product product =  mProducts.get(position);
 
-        intent.putExtra("product", product);
-        startActivity(intent);
+        FragmentTransaction ft =  getActivity().getSupportFragmentManager().beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ProductDetailsFragment productDetailsFragment = new ProductDetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("product", product);
+        productDetailsFragment.setArguments(bundle);
+        ft.replace(android.R.id.content, productDetailsFragment);
+        ft.addToBackStack(null);
+        ft.commit();
+
+//        intent.putExtra("product", product);
+//        startActivity(intent);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

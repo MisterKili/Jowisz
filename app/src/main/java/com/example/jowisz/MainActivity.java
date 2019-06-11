@@ -10,14 +10,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.example.jowisz.Model.Basket;
 
 public class MainActivity extends AppCompatActivity implements ProductsFragment.OnFragmentInteractionListener,
     ProfileFragment.OnFragmentInteractionListener, BasketFragment.OnFragmentInteractionListener,
-        ChooseCategoryFragment.OnFragmentInteractionListener {
+        ChooseCategoryFragment.OnFragmentInteractionListener,
+        ProductDetailsFragment.OnFragmentInteractionListener {
 
 
     Fragment currentFragment;
@@ -25,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements ProductsFragment.
     private ProfileFragment profileFragment;
     private BasketFragment basketFragment;
     private ChooseCategoryFragment chooseCategoryFragment;
+    ProductDetailsFragment productDetailsFragment;
     boolean categoryChosen = false;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;

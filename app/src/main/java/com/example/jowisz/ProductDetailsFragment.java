@@ -1,12 +1,18 @@
 package com.example.jowisz;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.jowisz.Model.Product;
 
 
 /**
@@ -18,14 +24,16 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class ProductDetailsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private TextView name;
+    private TextView description;
+    private TextView price;
+    private TextView amount;
+    TextView howManyNumber;
+    private Button addToBusket;
+    private Button bPlus;
+    private Button bMinus;
+    Product product;
 
     private OnFragmentInteractionListener mListener;
 
@@ -44,27 +52,87 @@ public class ProductDetailsFragment extends Fragment {
     // TODO: Rename and change types and number of parameters
     public static ProductDetailsFragment newInstance(String param1, String param2) {
         ProductDetailsFragment fragment = new ProductDetailsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+//        Intent intent = getActivity().getIntent();
+//        final Product product = (Product) intent.getSerializableExtra("product");
+
+        View rootView = inflater.inflate(R.layout.fragment_product_details, container, false);
+
+        Bundle bundle = getArguments();
+        product = (Product) bundle.getSerializable("product");
+
+        name = rootView.findViewById(R.id.nameProduct);
+        description = rootView.findViewById(R.id.descriptionProduct);
+        price = rootView.findViewById(R.id.priceProduct);
+        amount = rootView.findViewById(R.id.amountProduct);
+        howManyNumber = rootView.findViewById(R.id.howManyNumb);
+        addToBusket = rootView.findViewById(R.id.addProduct);
+        bPlus = rootView.findViewById(R.id.buttonPlus);
+        bMinus = rootView.findViewById(R.id.buttonMinus);
+
+        name.setText(product.getName());
+        description.setText(product.getDescription());
+        price.setText("Cena: "+Double.toString(product.getPriceUnit()));
+        amount.setText("Dostępnych: " + product.getAvaibility());
+
+        if(product.getAvaibility() > 0){
+//            amount.setText("Dostępny");
+            amount.setTextColor(getResources().getColor(R.color.colorPrimary));
+        } else {
+            amount.setText("Niedostępny");
+            amount.setTextColor(getResources().getColor(R.color.red));
+        }
+
+        bPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                product.increaseHowMany();
+                howManyNumber.setText(Integer.toString(product.getHowMany()));
+            }
+        });
+
+        bMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                product.decreaseHowMany();
+                howManyNumber.setText(Integer.toString(product.getHowMany()));
+            }
+        });
+
+        addToBusket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(product.getAvaibility()>0){
+
+                    if(product.getHowMany() != 0) {
+                        MainActivity mainActivity = (MainActivity) getActivity();
+                        mainActivity.basket.putProduct(product);
+                        Toast.makeText(getContext(), "Dodano do koszyka", Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Toast.makeText(getContext(), "Towaru nie ma w magazynie", Toast.LENGTH_SHORT).show();
+                    amount.setText("Niedostępny");
+                    amount.setTextColor(getResources().getColor(R.color.red));
+                }
+
+            }
+        });
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_product_details, container, false);
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

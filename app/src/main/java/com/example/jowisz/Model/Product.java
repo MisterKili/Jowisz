@@ -24,6 +24,18 @@ public class Product implements Serializable {
         this.availability = availability;
     }
 
+    public void increaseHowMany(){
+        if(getAvaibility()>getHowMany()){
+            howMany++;
+        }
+    }
+
+    public void decreaseHowMany(){
+        if(getHowMany()>0){
+            howMany--;
+        }
+    }
+
     public String getNameAndProducer(){
         return name+" - "+producer;
     }
@@ -34,6 +46,10 @@ public class Product implements Serializable {
 
     public String getTotalPrice(){
         return String.valueOf(priceUnit*howMany);
+    }
+
+    public double getTotalPriceDouble(){
+        return priceUnit*howMany;
     }
 
     public int getId() {
